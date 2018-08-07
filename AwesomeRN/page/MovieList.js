@@ -1,6 +1,7 @@
 import NiceScreen from './Nice';
 import { Image, FlatList, StyleSheet, Text, View,RefreshControl } from "react-native";
 import React, { Component } from "react";
+import { red, yellow } from '../node_modules/ansi-colors';
 var REQUEST_URL =
   "https://raw.githubusercontent.com/facebook/react-native/0.51-stable/docs/MoviesExample.json";
     export default class MovieList extends NiceScreen {
@@ -9,7 +10,9 @@ var REQUEST_URL =
        this.state = {
            movies:[],
            name:'wo',
-           refreshing:false,
+           loaded:false,
+           text:'hahaha',
+           backg:false
        }
        this.fetchData = this.fetchData.bind(this);
      //  this.renderListItem = this.renderListItem.bind(this);
@@ -18,8 +21,8 @@ var REQUEST_URL =
       this.fetchData();
    }
    render(){
-  //  return this.renderLoadingView();
-       if(!this.state.movies){
+   // return this.renderLoadingView();
+       if(!this.state.loaded){
            return this.renderLoadingView();
        }
        return this.movieList()
@@ -33,7 +36,7 @@ var REQUEST_URL =
    }
    onRefresh(){
         this.setState({
-            refreshing:true
+          loaded:false
         });
       //  this.fetchData = this.fetchData.bind(this);
         this.fetchData()
@@ -46,9 +49,17 @@ var REQUEST_URL =
    }
    renderLoadingView() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container,{backgroundColor:this.state.backg?'red':'yellow'}]} onStartShouldSetResponder={()=>true} onResponderGrant={
+        (evt) => {
+            this.setState(
+              {text:'caonimei',
+              backg:true,
+            }
+            )
+        }
+      }>
         <Text>
-          正在加载电影数据……
+          {this.state.text}
         </Text>
       </View>
     );
@@ -58,7 +69,7 @@ var REQUEST_URL =
        fetch(REQUEST_URL).then((response)=>response.json()).then((responseData)=>{
              this.setState({
                movies:this.state.movies.concat(responseData.movies),
-               refreshing:false
+               loaded:true
            });
        })
    }
@@ -70,7 +81,6 @@ var styles = StyleSheet.create({
       flexDirection: "row",
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "#F5FCFF"
     },
     rightContainer: {
       flex: 1
@@ -91,6 +101,5 @@ var styles = StyleSheet.create({
       paddingTop: 20,
       backgroundColor: "#F5FCFF",
       height:100,
-      width:50
     },
   });
