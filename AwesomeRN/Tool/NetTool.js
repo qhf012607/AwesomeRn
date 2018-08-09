@@ -1,5 +1,6 @@
 import React from 'react';
-
+var REQUEST_URL =
+  "https://www.apiopen.top/";
 export default class NetTool {
     /*
      *  post请求
@@ -7,9 +8,10 @@ export default class NetTool {
      *  params:参数,这里的参数要用这种格式：'key1=value1&key2=value2'
      *  callback:回调函数
      * */
-    static  postForm(url,params,sucess,fail){
+    static  postForm(urlapi,params,sucess,fail){
+        let FullUrl = REQUEST_URL + urlapi
         //fetch请求
-        fetch(url,{
+        fetch(FullUrl,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -27,7 +29,8 @@ export default class NetTool {
             });
     };
 
-    static postJSON(url,params,header,sucess,fail){
+    static postJSON(urlapi,params,header,sucess,fail){
+        let FullUrl = REQUEST_URL + urlapi
         var dic = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -38,7 +41,7 @@ export default class NetTool {
             }
         }
         //fetch请求
-        fetch(url,{
+        fetch(FullUrl,{
             method: 'POST',
             headers: dic,
             body:JSON.stringify(params)
@@ -55,7 +58,8 @@ export default class NetTool {
             });
     };
 
-      static get(url,params,sucess,fail){
+     static get(urlapi,params,sucess,fail){
+        let FullUrl = REQUEST_URL + urlapi
         if(params!=null){
             let paramasArray = [];
             Object.keys(params).forEach(key => paramasArray.push(key + '=' + params[key]))
@@ -65,7 +69,7 @@ export default class NetTool {
                 url += '&' + paramasArray.join('&')
             }
         }
-        fetch(url,{
+        fetch(FullUrl,{
             method:'GET'
         }).then(response => response.json()).then(responseJson => {
             sucess(responseJson)

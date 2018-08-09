@@ -20,7 +20,9 @@ var REQUEST_URL =
      //  this.renderListItem = this.renderListItem.bind(this);
    }
    componentDidMount(){
+     
       this.fetchData();
+
    }
    render(){
     

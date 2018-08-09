@@ -5,7 +5,7 @@ import NetTool from '../Tool/NetTool'
 export  default class NiceScreen extends React.Component {
   constructor(props){
     super(props);
-}
+  }
     // 定义属性
     static propTypes = {
         name:PropTypes.string,
@@ -18,25 +18,20 @@ export  default class NiceScreen extends React.Component {
         age:2,
         ifshow:false,
     }
-    componentDidMount() {
-        this.initSelfData();
-       
-    }
-   
-    initSelfData(){
-    
+    pushtoNave(screen){
+      this.props.navigation.push(screen)
     }
     render() {
-      const {params} = this.props.navigation.state;
-      const {loadView} = params;
-      loadView()
+      // const {params} = this.props.navigation.state;
+      // const {loadView} = params;
+      //loadView()
        let text = this.props.ifshow?'show':'false';
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>nice</Text>
         <Button
           title="Go to Details"
-          onPress={() => this.props.navigation.push('Movie')}
+          onPress={() => this.props.navigation.navigate('Movie')}
         />
       </View>
       );
