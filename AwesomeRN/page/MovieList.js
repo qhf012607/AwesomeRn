@@ -2,6 +2,8 @@ import NiceScreen from './Nice';
 import { Image, FlatList, StyleSheet, Text, View,RefreshControl } from "react-native";
 import React, { Component } from "react";
 import { red, yellow } from '../node_modules/ansi-colors';
+import NetTool from '../Tool/NetTool';
+//import {NetTool} from '../Tool/NetTool'
 var REQUEST_URL =
   "https://raw.githubusercontent.com/facebook/react-native/0.51-stable/docs/MoviesExample.json";
     export default class MovieList extends NiceScreen {
@@ -21,6 +23,7 @@ var REQUEST_URL =
       this.fetchData();
    }
    render(){
+    
    // return this.renderLoadingView();
        if(!this.state.loaded){
            return this.renderLoadingView();
@@ -58,6 +61,7 @@ var REQUEST_URL =
             )
         }
       }>
+      
         <Text>
           {this.state.text}
         </Text>
@@ -66,12 +70,13 @@ var REQUEST_URL =
   }
    fetchData(){
      //  var that = this
-       fetch(REQUEST_URL).then((response)=>response.json()).then((responseData)=>{
-             this.setState({
-               movies:this.state.movies.concat(responseData.movies),
-               loaded:true
-           });
-       })
+    let net = new NetTool()
+    NetTool.get(REQUEST_URL,null,(data)=>{
+      this.setState({
+        movies:this.state.movies.concat(data.movies),
+        loaded:true
+    });
+    },null)
    }
 }
 

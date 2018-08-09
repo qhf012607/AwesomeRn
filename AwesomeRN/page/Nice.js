@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, View, Text } from 'react-native';
 import PropTypes from 'prop-types'
-
+import NetTool from '../Tool/NetTool'
 export  default class NiceScreen extends React.Component {
   constructor(props){
     super(props);
@@ -24,7 +24,7 @@ export  default class NiceScreen extends React.Component {
     }
    
     initSelfData(){
-      
+    
     }
     render() {
       const {params} = this.props.navigation.state;
