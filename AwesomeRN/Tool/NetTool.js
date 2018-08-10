@@ -1,6 +1,8 @@
 import React from 'react';
+
 var REQUEST_URL =
   "https://www.apiopen.top/";
+
 export default class NetTool {
     /*
      *  post请求
