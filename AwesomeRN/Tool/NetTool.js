@@ -61,14 +61,14 @@ export default class NetTool {
     };
 
      static get(urlapi,params,sucess,fail){
-        let FullUrl = REQUEST_URL + urlapi
+        var FullUrl = REQUEST_URL + urlapi
         if(params!=null){
             let paramasArray = [];
             Object.keys(params).forEach(key => paramasArray.push(key + '=' + params[key]))
-            if(url.search(/\?/) === -1){
-                url += '?' + paramasArray.join('&')
+            if(FullUrl.search(/\?/) === -1){
+                FullUrl += '?' + paramasArray.join('&')
             }else{
-                url += '&' + paramasArray.join('&')
+                FullUrl += '&' + paramasArray.join('&')
             }
         }
         fetch(FullUrl,{
