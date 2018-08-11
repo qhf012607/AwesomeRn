@@ -1,6 +1,6 @@
 import NiceScreen from "../../page/Nice";
 import React from 'react';
-import { Button,Image, View, Text ,StyleSheet,SectionList} from 'react-native';
+import { Button,Image, View, Text ,StyleSheet,SectionList,ActivityIndicator} from 'react-native';
 import { yellow } from "../../node_modules/kleur";
 import NetTool from "../../Tool/NetTool";
 import {newsApi} from "../../common/netUrl"
@@ -46,7 +46,12 @@ export default  class newsScreen extends NiceScreen{
     };
 
     render(){
-      return <SectionList  style={{}} sections={this.state.news} renderItem={this.tableitem}  renderSectionHeader={this.tableHeader} keyExtractor={(item, index) => index} />
+      if (this.state.loaded){
+        return <SectionList  style={{}} stickySectionHeadersEnabled={false} sections={this.state.news} renderItem={this.tableitem}  renderSectionHeader={this.tableHeader} keyExtractor={(item, index) => index} />
+      }else{
+        return this.renderLoadingView()
+      }
+    
         // if(this.state.loaded){
         //     return this.renderLoadingView();
         // }else{
@@ -66,43 +71,59 @@ export default  class newsScreen extends NiceScreen{
     //     />
     //   </View>
     };
-    // renderLoadingView() {
-    //   return (
-    //     <View style={[{backgroundColor:this.state.backg?'red':'yellow'}]} onStartShouldSetResponder={()=>true} onResponderGrant={
-    //       (evt) => {
-    //       }
-    //     }>
-        
-    //       <Text>
-    //        wo
-    //       </Text>
-    //     </View>
-    //   );
-    // }
+    renderLoadingView() {
+      return (
+        <View style={{flex:1,justifyContent:'center'}} onStartShouldSetResponder={()=>true} onResponderGrant={
+          (evt) => {
+          }
+        }>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text style={{textAlign:'center'}}>正在加载..</Text>
+        </View>
+      );
+    }
   
     tableHeader({section}){
-      return <View style={{backgroundColor:'blue'}}>
+      return <View style={{backgroundColor:'lightGray'}}>
                 <View style={styles.thumbnail}/>
-                <Text style={{left:10,bottom:0,height:20,right:0,position:'absolute',textAlign:'center'}}>{section.title} </Text>
+                <Text style={{left:0,bottom:0,height:30,right:0,textAlign:'center'}}>{section.title} </Text>
             </View>
     };
 
     tableitem({item}){
       var  picInfos = new Array
         picInfos = item['picInfo'];
-        let url = '';
-        if (picInfos.length>0){
-          let picinfo = picInfos[0];
-          url = picinfo['url'];
-        }
-        return <View style={{backgroundColor:'yellow'}}>
-            <Image
-             style={{width:100}}
-             source={{uri:url}}
-           />
-                <Text style={{left:10,top:0,height:20}}>{item.title} </Text>
-            </View>
-    };
+        var url = ''
+        url  = picInfos.length>0 ?  picInfos[0]['url'] : '';
+       if (url.length > 0 ){
+        return itemTitleCell.getImageView(item)
+       }else{
+        return itemTitleCell.getTitleView(item)
+       };
+    }
+}
+
+export  class itemTitleCell extends React.Component {
+  static getTitleView(item){
+    return <View >
+      <View style={{height:10}}/>
+       <Text style={{left:10,top:0,fontSize:24}}>{item.title} </Text>
+       <View style={{height:10}}/>
+       <View style={{height:1,backgroundColor:'gray'}}/>
+      </View>
+   };
+  static getImageView(item){
+    var  picInfos = new Array
+    picInfos = item['picInfo'];
+    var url = ''
+    url  = picInfos.length>0 ?  picInfos[0]['url'] : '';
+    return  <View>
+        <Image  style={{height:150}}  source={{uri:url}}/>
+        <Text style={{left:10,bottom:10,height:20,position:'absolute'}}>{item.title} </Text>
+        <View style={{height:1,backgroundColor:'gray'}}/>
+        <View style={{height:10}}/>
+    </View>
+   }
 }
 var styles = StyleSheet.create({
     container: {
