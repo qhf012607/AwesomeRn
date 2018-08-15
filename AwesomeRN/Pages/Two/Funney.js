@@ -19,10 +19,10 @@ export default class funneyScreen extends NiceScreen{
     }
     componentDidMount(){
         this.fetchData(1,1);
-        this.fetchData(41,1);
-        this.fetchData(10,1);
-        this.fetchData(29,1);
-        this.fetchData(31,1);
+        this.fetchData(2,1);
+        this.fetchData(3,1);
+        this.fetchData(4,1);
+        this.fetchData(4,1);
     }
     render(){
         return <ScrollableTabView
@@ -32,14 +32,43 @@ export default class funneyScreen extends NiceScreen{
       >
         {
             this.state.all.map((itemTitleCell,index)=>{
-                return  <FlatList tabLabel={itemTitleCell}></FlatList>
+                return  <FlatList tabLabel={itemTitleCell} data={this.getData(index)} renderItem={this.getCellitem}></FlatList>
             })
         }
       </ScrollableTabView>;
     }
 
+    getData(index){
+        var arr = []
+        switch (index) {
+            case 0:
+            arr = this.state.alls
+                break;
+           case 1:
+           arr = this.state.movies
+                break;
+           case 2:
+           arr = this.state.pics
+                break;  
+            case 3:
+            arr = this.state.texts
+                break;
+            case 4:
+            arr = this.state.voices
+                break;
+            default:
+                break;
+        }
+       return arr
+    }
+    getCellitem({item,index}){
+        return <View>
+            <Text>{item.text}</Text>
+
+            </View>
+    };
+
     fetchData(index,page){
-       
         NetTool.get('satinApi',{type:index,page:page},(json)=>{
             const{data} = json
             switch (index) {
@@ -48,7 +77,26 @@ export default class funneyScreen extends NiceScreen{
                     alls:data
                 });
                     break;
-            
+               case 41:
+                this.setState({
+                    movies:data
+                });
+                    break;
+               case 10:
+                this.setState({
+                    pics:data
+                });
+                    break;  
+                case 29:
+                this.setState({
+                    texts:data
+                });
+                    break;
+                case 31:
+                this.setState({
+                    voices:data
+                });
+                    break;
                 default:
                     break;
             }
