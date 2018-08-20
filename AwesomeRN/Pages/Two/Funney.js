@@ -1,9 +1,10 @@
 import React from 'react';
 import NiceScreen from "../../page/Nice";
 import ScrollableTabView, {DefaultTabBar, ScrollableTabBar} from 'react-native-scrollable-tab-view';
-import { Image, FlatList, StyleSheet, Text, View,RefreshControl } from "react-native";
+import { Image, FlatList, StyleSheet, Text, View,RefreshControl ,Dimensions} from "react-native";
 import NetTool from "../../Tool/NetTool";
 import { itemTitleCell } from '../One/News';
+ //import {ImageCell} from '../Two'
 export default class funneyScreen extends NiceScreen{
     constructor(props){
         super(props)
@@ -62,6 +63,9 @@ export default class funneyScreen extends NiceScreen{
        return arr
     }
     getCellitem({item,index}){
+        if (item.cdn_img) {
+            return <ImageCell data={item}/>
+        }
         return <View>
             <Text>{item.text}</Text>
 
@@ -77,22 +81,22 @@ export default class funneyScreen extends NiceScreen{
                     alls:data
                 });
                     break;
-               case 41:
+               case 4:
                 this.setState({
                     movies:data
                 });
                     break;
-               case 10:
+               case 3:
                 this.setState({
                     pics:data
                 });
                     break;  
-                case 29:
+                case 2:
                 this.setState({
                     texts:data
                 });
                     break;
-                case 31:
+                case 1:
                 this.setState({
                     voices:data
                 });
@@ -104,5 +108,25 @@ export default class funneyScreen extends NiceScreen{
         },(error)=>{
 
         })
+    }
+}
+export class ImageCell extends React.Component{
+    constructor(props){
+        super(props);
+
+    }
+    render(){
+        var {width} =  Dimensions.get('window');
+        let strWdith = this.props.data.width;
+        let strheight = this.props.data.height
+        let scale = parseInt(strheight)/parseInt(strWdith)
+        let height = width * scale
+        console.log(this.props.height);
+        return <View>
+             <Text style={{backgroundColor:'red'}}>{this.props.data.text}</Text>
+           
+
+            <Image style={{width:width,backgroundColor:'yellow',height:height}} source={{uri:this.props.data.cdn_img}}/>
+        </View>
     }
 }
