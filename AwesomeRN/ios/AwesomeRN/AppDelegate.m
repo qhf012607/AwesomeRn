@@ -6,17 +6,24 @@
  */
 
 #import "AppDelegate.h"
+#import <CodePush/CodePush.h>
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-
+//Production  | rEYGImcEEK3iOY1IiAG_G1KR59cn32cfd043-8479-427a-a1aa-c12791965424 
+//Staging    │ oSVu2LG81McoXIk4hCGHRUJ3ocpF32cfd043-8479-427a-a1aa-c12791965424 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
 
-  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  
+    #ifdef DEBUG
+        jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+    #else
+        jsCodeLocation = [CodePush bundleURL];
+   #endif
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"AwesomeRN"

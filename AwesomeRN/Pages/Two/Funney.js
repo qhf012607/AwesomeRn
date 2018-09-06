@@ -1,10 +1,11 @@
 import React from 'react';
 import NiceScreen from "../../page/Nice";
 import ScrollableTabView, {DefaultTabBar, ScrollableTabBar} from 'react-native-scrollable-tab-view';
-import { Image, FlatList, StyleSheet, Text, View,RefreshControl ,Dimensions} from "react-native";
+import { Image, FlatList, StyleSheet, Text, View,RefreshControl ,Dimensions,Button} from "react-native";
 import NetTool from "../../Tool/NetTool";
 import { itemTitleCell } from '../One/News';
  //import {ImageCell} from '../Two'
+import codePush from 'react-native-code-push';
 export default class funneyScreen extends NiceScreen{
     constructor(props){
         super(props)
@@ -17,6 +18,8 @@ export default class funneyScreen extends NiceScreen{
             voices:[],
             loaded:false,
         }
+        this.checkUpdate = this.checkUpdate.bind(this);
+        this.getCellitem = this.getCellitem.bind(this);
     }
     componentDidMount(){
         this.fetchData(1,1);
@@ -67,11 +70,25 @@ export default class funneyScreen extends NiceScreen{
             return <ImageCell data={item}/>
         }
         return <View>
+            <Button  title = "setting"  onPress={this.checkUpdate}/>
             <Text>{item.text}</Text>
 
             </View>
     };
 
+    checkUpdate(){
+     //   codePush.sync
+        codePush.sync({
+            updateDialog: {
+              appendReleaseDescription: true,
+              descriptionPrefix:'\n\n更新内容：\n',
+              title:'更新',
+              mandatoryUpdateMessage:'',
+              mandatoryContinueButtonLabel:'更新',
+            },
+            mandatoryInstallMode:codePush.InstallMode.IMMEDIATE,
+          });
+    }
     fetchData(index,page){
         NetTool.get('satinApi',{type:index,page:page},(json)=>{
             const{data} = json
@@ -123,10 +140,10 @@ export class ImageCell extends React.Component{
         let height = width * scale
         console.log(this.props.height);
         return <View>
-             <Text style={{backgroundColor:'red'}}>{this.props.data.text}</Text>
+             <Text style={{backgroundColor:'black'}}>{this.props.data.text}</Text>
            
 
-            <Image style={{width:width,backgroundColor:'yellow',height:height}} source={{uri:this.props.data.cdn_img}}/>
+            <Image style={{width:width,backgroundColor:'blue',height:height}} source={{uri:this.props.data.cdn_img}}/>
         </View>
     }
 }

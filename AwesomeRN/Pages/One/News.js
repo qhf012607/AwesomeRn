@@ -3,7 +3,9 @@ import React from 'react';
 import { Button,Image, View, Text ,StyleSheet,SectionList,ActivityIndicator} from 'react-native';
 import { yellow } from "../../node_modules/kleur";
 import NetTool from "../../Tool/NetTool";
-import {newsApi} from "../../common/netUrl"
+import {newsApi} from "../../common/netUrl";
+
+
 export default  class newsScreen extends NiceScreen{
     constructor(props){
         super(props);
@@ -21,7 +23,8 @@ export default  class newsScreen extends NiceScreen{
      
     }
     componentDidMount(){
-       this.fetctData()
+       this.fetctData();
+       
     }
 
     fetctData(){
@@ -106,7 +109,7 @@ export default  class newsScreen extends NiceScreen{
 export  class itemTitleCell extends React.Component {
   static getTitleView(item){
     return <View >
-      <View style={{height:10}}/>
+      <View style={{height:10}} />
        <Text style={{left:10,top:0,fontSize:24}}>{item.title} </Text>
        <View style={{height:10}}/>
        <View style={{height:1,backgroundColor:'gray'}}/>
@@ -120,7 +123,7 @@ export  class itemTitleCell extends React.Component {
     return  <View>
         <Image  style={{height:150}}  source={{uri:url}}/>
         <Text style={{left:10,bottom:10,height:20,position:'absolute'}}>{item.title} </Text>
-        <View style={{height:1,backgroundColor:'gray'}}/>
+        <View style={{height:1,backgroundColor:'red'}}/>
         <View style={{height:10}}/>
     </View>
    }
